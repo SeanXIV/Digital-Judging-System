@@ -1,0 +1,8 @@
+backend/target/
+*.md
+.git/
+.gitignore
+Dockerfile
+.dockerignore
+frontend/
+data/

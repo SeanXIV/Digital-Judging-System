@@ -11,7 +11,7 @@ This guide explains how to build and deploy the Spring Boot backend for the Digi
 
 ## Building the Docker Image
 
-Navigate to the `backend` directory and run:
+From the root directory, run:
 
 ```bash
 mvn clean package -DskipTests
@@ -82,9 +82,18 @@ docker run -p 8080:8080 \
 1. Push your code to GitHub.
 2. Connect your GitHub repo to Render.
 3. Create a new Web Service.
-4. Set the runtime to Docker.
+4. Select **Docker** as the Runtime.
 5. Configure the environment variables in Render's dashboard.
+   - `SPRING_PROFILES_ACTIVE=prod`
+   - `SPRING_DATASOURCE_URL`
+   - `SPRING_DATASOURCE_USERNAME`
+   - `SPRING_DATASOURCE_PASSWORD`
+   - `JWT_SECRET`
+   - `CORS_ALLOWED_ORIGIN` (set to your Vercel frontend URL)
+   - `PORT` (optional, defaults to 8080)
 6. Deploy.
+
+**Important**: Make sure you select "Docker" as the Environment when creating the Web Service, not a different runtime.
 
 ## Notes
 
