@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../api';
 
 function ScoringOverview({ eventId, onClose }) {
   const [data, setData] = useState(null);
@@ -41,7 +42,7 @@ function ScoringOverview({ eventId, onClose }) {
   const fetchDetailedScores = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:8081/organizer/events/${eventId}/detailed-scores`, {
+      const response = await axios.get(`${API_BASE_URL}/organizer/events/${eventId}/detailed-scores`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(response.data);

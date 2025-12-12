@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../api';
 import ScoringOverview from './ScoringOverview';
 import Navbar from './Navbar';
 
@@ -31,7 +32,7 @@ function OrganizerDashboard({ onLogout, logo }) {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/organizer/events', {
+      const response = await axios.get(`${API_BASE_URL}/organizer/events`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEvents(Array.isArray(response.data) ? response.data : []);
@@ -58,7 +59,7 @@ function OrganizerDashboard({ onLogout, logo }) {
           { name: 'Presentation', weight: 0.1 }
         ]
       };
-      await axios.post('http://localhost:8081/organizer/events', event, {
+      await axios.post(`${API_BASE_URL}/organizer/events`, event, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchEvents();
@@ -73,7 +74,7 @@ function OrganizerDashboard({ onLogout, logo }) {
   const fetchTeams = async (eventId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:8081/organizer/events/${eventId}/teams`, {
+      const response = await axios.get(`${API_BASE_URL}/organizer/events/${eventId}/teams`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTeams(response.data);
@@ -86,7 +87,7 @@ function OrganizerDashboard({ onLogout, logo }) {
   const fetchJudges = async (eventId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:8081/organizer/events/${eventId}/judges`, {
+      const response = await axios.get(`${API_BASE_URL}/organizer/events/${eventId}/judges`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setJudges(response.data);
@@ -99,7 +100,7 @@ function OrganizerDashboard({ onLogout, logo }) {
   const fetchLeaderboard = async (eventId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:8081/organizer/events/${eventId}/leaderboard`, {
+      const response = await axios.get(`${API_BASE_URL}/organizer/events/${eventId}/leaderboard`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setLeaderboard(response.data);
@@ -114,7 +115,7 @@ function OrganizerDashboard({ onLogout, logo }) {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8081/organizer/events/${eventId}`, {
+      await axios.delete(`${API_BASE_URL}/organizer/events/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchEvents();
@@ -130,7 +131,7 @@ function OrganizerDashboard({ onLogout, logo }) {
     if (!selectedEvent) return;
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:8081/organizer/events/${selectedEvent.id}/export`, {
+      const response = await axios.get(`${API_BASE_URL}/organizer/events/${selectedEvent.id}/export`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'blob'
       });
@@ -152,7 +153,7 @@ function OrganizerDashboard({ onLogout, logo }) {
     try {
       const token = localStorage.getItem('token');
       if (type === 'team') {
-        await axios.post(`http://localhost:8081/organizer/events/${eventId}/teams`, formData, {
+        await axios.post(`${API_BASE_URL}/organizer/events/${eventId}/teams`, formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchTeams(eventId);
@@ -160,14 +161,14 @@ function OrganizerDashboard({ onLogout, logo }) {
       } else if (type === 'upload') {
         const formDataUpload = new FormData();
         formDataUpload.append('file', formData.file);
-        await axios.post(`http://localhost:8081/organizer/events/${eventId}/teams/upload`, formDataUpload, {
+        await axios.post(`${API_BASE_URL}/organizer/events/${eventId}/teams/upload`, formDataUpload, {
           headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
         });
         fetchTeams(eventId);
         fetchEvents(); // Refresh event counts
         alert('Teams uploaded successfully');
       } else if (type === 'judge') {
-        await axios.post(`http://localhost:8081/organizer/events/${eventId}/judges`, formData, {
+        await axios.post(`${API_BASE_URL}/organizer/events/${eventId}/judges`, formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchJudges(eventId);

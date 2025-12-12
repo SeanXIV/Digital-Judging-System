@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../api';
 import llamaImg from '../assets/Llama.jpg';
 import wethinkcodeLogo from '../assets/wethinkcode-logo.png';
 import Navbar from './Navbar';
@@ -23,10 +24,10 @@ function JudgeDashboard({ onLogout, logo }) {
     try {
       const token = localStorage.getItem('token');
       const [teamsRes, scoredRes] = await Promise.all([
-        axios.get('http://localhost:8081/judge/teams', {
+        axios.get(`${API_BASE_URL}/judge/teams`, {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get('http://localhost:8081/judge/scored-teams', {
+        axios.get(`${API_BASE_URL}/judge/scored-teams`, {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -52,7 +53,7 @@ function JudgeDashboard({ onLogout, logo }) {
         Feasibility: scores.feasibility,
         Presentation: scores.presentation
       };
-      await axios.post(`http://localhost:8081/judge/teams/${scoringTeam.id}/score`, {
+      await axios.post(`${API_BASE_URL}/judge/teams/${scoringTeam.id}/score`, {
         ...criteriaScores,
         comment: scores.comment,
         judgeName: judgeName

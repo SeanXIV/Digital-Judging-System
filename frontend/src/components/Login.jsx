@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_BASE_URL from '../api';
 
 function Login({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,7 +15,7 @@ function Login({ onLogin }) {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8081/auth/login', { email, password });
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('role', response.data.role);
       onLogin(response.data.role);
@@ -29,7 +30,7 @@ function Login({ onLogin }) {
   const handleRegister = async () => {
     setLoading(true);
     try {
-      await axios.post('http://localhost:8081/auth/register', { name, email, password, role });
+      await axios.post(`${API_BASE_URL}/auth/register`, { name, email, password, role });
       alert('Registration successful! Please login.');
       setIsLogin(true);
     } catch (error) {

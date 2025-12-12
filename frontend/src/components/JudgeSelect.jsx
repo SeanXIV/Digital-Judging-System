@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_BASE_URL from '../api';
 import wethinkcodeLogo from '../assets/wethinkcode-logo.png';
 
 function JudgeSelect() {
@@ -16,7 +17,7 @@ function JudgeSelect() {
 
   const fetchJudges = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/auth/judges');
+      const response = await axios.get(`${API_BASE_URL}/auth/judges`);
       setJudges(response.data);
     } catch (error) {
       console.error('Failed to fetch judges:', error);
@@ -27,7 +28,7 @@ function JudgeSelect() {
     e.preventDefault();
     if (selectedJudge) {
       try {
-        const response = await axios.post('http://localhost:8081/auth/login', {
+        const response = await axios.post(`${API_BASE_URL}/auth/login`, {
           email: selectedJudge,
           password: 'password123'
         });
