@@ -40,13 +40,18 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+                    String allowedOrigin = System.getenv("CORS_ALLOWED_ORIGIN");
+                    if (allowedOrigin != null && !allowedOrigin.isEmpty()) {
+                        config.setAllowedOrigins(Arrays.asList(allowedOrigin));
+                    } else {
+                        config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+                    }
                     config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
                     config.setAllowedHeaders(Arrays.asList("*"));
                     return config;
                 }))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);

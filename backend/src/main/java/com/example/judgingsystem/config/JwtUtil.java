@@ -1,12 +1,14 @@
 package com.example.judgingsystem.config;
 
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private String jwtSecret = "myFixedSecretKeyForDemoPurposesThatIsLongEnoughForHS512AlgorithmSecurityRequirements1234567890abcdefghij1234567890";
+    @Value("${jwt.secret}")
+    private String jwtSecret;
     private int jwtExpirationMs = 86400000;
 
     public String generateToken(String email) {
